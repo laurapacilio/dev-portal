@@ -64,13 +64,14 @@ function TutorialViewSidebarContent({ items }: SectionListProps) {
 function SectionList({ items }: SectionListProps) {
 	return (
 		<ul className={s.listRoot}>
-			{items.map(({ text, href, isActive }: ListItemProps) => {
+			{items.map(({ text, href, isActive, rightIcon }: ListItemProps) => {
 				return (
 					<ListItem
 						key={`${text}${href}`}
 						text={text}
 						href={href}
 						isActive={isActive}
+						rightIcon={rightIcon}
 					/>
 				)
 			})}
@@ -78,8 +79,10 @@ function SectionList({ items }: SectionListProps) {
 	)
 }
 
-function ListItem({ href, isActive, text }: ListItemProps) {
-	return <SidebarNavMenuItem item={{ isActive, title: text, href }} />
+function ListItem({ href, isActive, text, rightIcon }: ListItemProps) {
+	return (
+		<SidebarNavMenuItem item={{ isActive, title: text, href, rightIcon }} />
+	)
 }
 
 function SectionTitle({ text }: SectionTitleProps) {

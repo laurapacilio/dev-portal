@@ -1,3 +1,4 @@
+import { ReactElement } from 'react'
 import { SidebarProps } from 'components/sidebar'
 
 export interface TutorialSidebarProps {
@@ -37,6 +38,7 @@ export interface ListItemProps {
 	href: string
 	isActive?: boolean
 	text: string
+	rightIcon?: ReactElement
 }
 
 export interface SectionListProps {

@@ -12,10 +12,14 @@ export function formatTutorialToMenuItem(
 	currentPath: string
 ): ListItemProps {
 	const path = getTutorialSlug(tutorial.slug, collectionSlug)
+
+	const rightIcon = <span style={{ color: 'red' }}>Icon</span>
+
 	return {
 		text: tutorial.name,
 		href: path,
 		isActive: path === currentPath,
+		rightIcon,
 	}
 }
 
