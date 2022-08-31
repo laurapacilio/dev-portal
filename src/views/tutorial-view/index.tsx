@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { MDXRemote } from 'next-mdx-remote'
 
 // Global imports
+import { useUpdateTutorialProgress } from 'hooks/progress'
 import useCurrentPath from 'hooks/use-current-path'
 import { useOptInAnalyticsTracking } from 'hooks/use-opt-in-analytics-tracking'
 import { useMobileMenu } from 'contexts'
@@ -188,6 +189,14 @@ function TutorialView({
 		},
 	]
 
+	/**
+	 * Keep track of progress for authenticated users
+	 */
+	const progressRefs = useUpdateTutorialProgress({
+		tutorialId: id,
+		collectionId: collectionCtx.current.id,
+	})
+
 	return (
 		<>
 			<Head>
@@ -229,6 +238,7 @@ function TutorialView({
 							}}
 							tutorialId={id}
 						/>
+						<span ref={progressRefs.startRef} />
 						{hasVideo && video.id && !video.videoInline && (
 							<VideoEmbed
 								url={getVideoUrl({
@@ -242,6 +252,7 @@ function TutorialView({
 								<MDXRemote {...content} components={MDX_COMPONENTS} />
 							</DevDotContent>
 						</TabProvider>
+						<span ref={progressRefs.endRef} />
 						<NextPrevious {...nextPreviousData} />
 						<FeaturedInCollections
 							className={s.featuredInCollections}
