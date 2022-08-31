@@ -13,6 +13,7 @@ import {
 	TutorialIdCollectionId,
 	TutorialProgressLabel,
 } from 'lib/learn-client/types'
+import { useRouter } from 'next/router'
 
 type IntersectionRef = (node?: Element) => void
 
@@ -40,6 +41,16 @@ export function useUpdateTutorialProgress({
 	tutorialId,
 	collectionId,
 }: TutorialIdCollectionId): UpdateProgressReturnInterface {
+	/**
+	 * We want to ensure the page is fully loaded for client-side transitions,
+	 * otherwise the "end" element appears in view initially and
+	 * any tutorial navigated to client-side from the bottom of another tutorial
+	 * view (ie with next-previous) gets marked "complete" off the bat.
+	 *
+	 * TODO: still need to figure this out.
+	 * Maybe diagnosis of why this is happening is wrong?
+	 */
+
 	// We don't try to update progress unless we're authenticated
 	const { isAuthenticated } = useAuthentication()
 	// We need to know if progress exists, to know whether to "create" or "update"
@@ -71,6 +82,9 @@ export function useUpdateTutorialProgress({
 		if (!hasIds || !isAuthenticated || !isReadyToRunMutation || isLoading) {
 			return
 		}
+
+		console.log({ tutorialProgressLabel, endInView })
+
 		/**
 		 * Determine the new progress state, which we'll then update
 		 * - 'complete' (100%) if the end ref is visible

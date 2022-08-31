@@ -182,7 +182,7 @@ function TutorialView({
 			children: (
 				<TutorialViewSidebarContent
 					items={collectionCtx.current.tutorials.map((t) =>
-						formatTutorialToMenuItem(t, collectionCtx.current.slug, currentPath)
+						formatTutorialToMenuItem(t, collectionCtx.current, currentPath)
 					)}
 				/>
 			),
@@ -192,10 +192,14 @@ function TutorialView({
 	/**
 	 * Keep track of progress for authenticated users
 	 */
+	const tutorialId = id
+	const collectionId = collectionCtx.current.id
 	const progressRefs = useUpdateTutorialProgress({
-		tutorialId: id,
-		collectionId: collectionCtx.current.id,
+		tutorialId,
+		collectionId,
 	})
+
+	console.log(`Rendering tutorial ${name}...`)
 
 	return (
 		<>
@@ -238,7 +242,11 @@ function TutorialView({
 							}}
 							tutorialId={id}
 						/>
-						<span ref={progressRefs.startRef} />
+
+						<span
+							key={`${collectionId}${tutorialId}-start`}
+							ref={progressRefs.startRef}
+						/>
 						{hasVideo && video.id && !video.videoInline && (
 							<VideoEmbed
 								url={getVideoUrl({
@@ -252,7 +260,10 @@ function TutorialView({
 								<MDXRemote {...content} components={MDX_COMPONENTS} />
 							</DevDotContent>
 						</TabProvider>
-						<span ref={progressRefs.endRef} />
+						<span
+							key={`${collectionId}${tutorialId}-end`}
+							ref={progressRefs.endRef}
+						/>
 						<NextPrevious {...nextPreviousData} />
 						<FeaturedInCollections
 							className={s.featuredInCollections}

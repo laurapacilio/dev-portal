@@ -1,5 +1,5 @@
 import { TutorialLite as ClientTutorialLite } from 'lib/learn-client/types'
-import { ListItemProps } from 'components/tutorials-sidebar/types'
+import { TutorialListItemProps } from 'components/tutorials-sidebar/types'
 import { getTutorialSlug } from 'views/collection-view/helpers'
 
 export function splitProductFromFilename(slug: string): string {
@@ -8,18 +8,20 @@ export function splitProductFromFilename(slug: string): string {
 
 export function formatTutorialToMenuItem(
 	tutorial: ClientTutorialLite,
-	collectionSlug: string,
+	collection: {
+		slug: string
+		id: string
+	},
 	currentPath: string
-): ListItemProps {
-	const path = getTutorialSlug(tutorial.slug, collectionSlug)
-
-	const rightIcon = <span style={{ color: 'red' }}>Icon</span>
+): TutorialListItemProps {
+	const path = getTutorialSlug(tutorial.slug, collection.slug)
 
 	return {
+		tutorialId: tutorial.id,
+		collectionId: collection.id,
 		text: tutorial.name,
 		href: path,
 		isActive: path === currentPath,
-		rightIcon,
 	}
 }
 
